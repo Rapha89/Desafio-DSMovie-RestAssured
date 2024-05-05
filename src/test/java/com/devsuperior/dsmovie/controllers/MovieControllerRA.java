@@ -21,7 +21,7 @@ public class MovieControllerRA {
 	private Long existingMovieId, nonExistingMovieId;
 	private String clientUsername, clientPassword, adminUsername, adminPassword;
 	private String clientToken, adminToken, invalidToken;
-	private Map<String, Object> postmovieInstance;
+	private Map<String, Object> postMovieInstance;
 
 
 	@BeforeEach
@@ -42,11 +42,11 @@ public class MovieControllerRA {
 		adminToken = TokenUtil.obtainAccessToken(adminUsername, adminPassword);
 		invalidToken = adminToken + "xpto";
 
-		postmovieInstance = new HashMap<>();
-		postmovieInstance.put("title", "Test Movie");
-		postmovieInstance.put("score", 0.0);
-		postmovieInstance.put("count", 0);
-		postmovieInstance.put("image", "https://www.themoviedb.org/t/p/w533_and_h300_bestv2/jBJWaqoSCiARWtfV0GlqHrcdidd.jpg");
+		postMovieInstance = new HashMap<>();
+		postMovieInstance.put("title", "Test Movie");
+		postMovieInstance.put("score", 0.0);
+		postMovieInstance.put("count", 0);
+		postMovieInstance.put("image", "https://www.themoviedb.org/t/p/w533_and_h300_bestv2/jBJWaqoSCiARWtfV0GlqHrcdidd.jpg");
 
 	}
 
@@ -111,8 +111,8 @@ public class MovieControllerRA {
 	@Test
 	public void insertShouldReturnUnprocessableEntityWhenAdminLoggedAndBlankTitle() throws JSONException {
 
-		postmovieInstance.put("title", "   ");
-		JSONObject newMovie = new JSONObject(postmovieInstance);
+		postMovieInstance.put("title", "   ");
+		JSONObject newMovie = new JSONObject(postMovieInstance);
 
 		given()
 				.header("Content-type", "application/json")
@@ -120,7 +120,7 @@ public class MovieControllerRA {
 				.body(newMovie)
 				.contentType(ContentType.JSON)
 				.accept(ContentType.JSON)
-				.when()
+		.when()
 				.post("/movies")
 		.then()
 				.statusCode(422)
@@ -131,7 +131,7 @@ public class MovieControllerRA {
 	@Test
 	public void insertShouldReturnForbiddenWhenClientLogged() throws Exception {
 
-		JSONObject newMovie = new JSONObject(postmovieInstance);
+		JSONObject newMovie = new JSONObject(postMovieInstance);
 
 		given()
 				.header("Content-type", "application/json")
@@ -139,9 +139,9 @@ public class MovieControllerRA {
 				.body(newMovie)
 				.contentType(ContentType.JSON)
 				.accept(ContentType.JSON)
-				.when()
+		.when()
 				.post("/movies")
-				.then()
+		.then()
 				.statusCode(403);
 
 	}
@@ -149,7 +149,7 @@ public class MovieControllerRA {
 	@Test
 	public void insertShouldReturnUnauthorizedWhenInvalidToken() throws Exception {
 
-		JSONObject newMovie = new JSONObject(postmovieInstance);
+		JSONObject newMovie = new JSONObject(postMovieInstance);
 
 		given()
 				.header("Content-type", "application/json")
@@ -157,9 +157,9 @@ public class MovieControllerRA {
 				.body(newMovie)
 				.contentType(ContentType.JSON)
 				.accept(ContentType.JSON)
-				.when()
+		.when()
 				.post("/movies")
-				.then()
+		.then()
 				.statusCode(401);
 	}
 
